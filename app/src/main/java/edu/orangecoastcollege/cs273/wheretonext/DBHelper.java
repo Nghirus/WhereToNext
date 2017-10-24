@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ class DBHelper extends SQLiteOpenHelper {
     private static final String FIELD_TUITION = "tuition";
     private static final String FIELD_RATING = "rating";
     private static final String FIELD_IMAGE_NAME = "image_name";
-    private static final String[] FIELD_ARRAY = {KEY_FIELD_ID, FIELD_NAME, FIELD_POPULATION, FIELD_RATING
+    private static final String[] FIELD_ARRAY = {KEY_FIELD_ID, FIELD_NAME, FIELD_POPULATION,FIELD_TUITION, FIELD_RATING
     ,FIELD_IMAGE_NAME};
 
 
@@ -38,12 +39,13 @@ class DBHelper extends SQLiteOpenHelper {
         //CREATE TABLE whereToNext
         //(_id INTEGER PRIMARY KEY, name TEXT, population Integer, tuition REAL, rating REAL, image_name TEXT)
         String table = "CREATE TABLE " + DATABASE_TABLE + "("
-                + KEY_FIELD_ID + "INTEGER PRIMARY KEY,"
-                + FIELD_NAME + "TEXT,"
-                + FIELD_POPULATION + "INTEGER, "
-                + FIELD_TUITION + "REAL, "
-                + FIELD_RATING + "REAL, "
-                + FIELD_IMAGE_NAME + "TEXT" + ")";
+                + KEY_FIELD_ID + " INTEGER PRIMARY KEY, "
+                + FIELD_NAME + " TEXT, "
+                + FIELD_POPULATION + " INTEGER, "
+                + FIELD_TUITION + " REAL, "
+                + FIELD_RATING + " REAL, "
+                + FIELD_IMAGE_NAME + " TEXT" + ")";
+        Log.i("DATABASE STRING=",table);
         database.execSQL(table);
 
     }
@@ -64,6 +66,10 @@ class DBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(FIELD_NAME, college.getName());
         values.put(FIELD_POPULATION, college.getPopulation());
+        values.put(FIELD_TUITION, college.getTuition());
+        values.put(FIELD_POPULATION, college.getPopulation());
+        values.put(FIELD_RATING,college.getRating());
+        values.put(FIELD_IMAGE_NAME, college.getImageName());
 
         long id = db.insert(DATABASE_TABLE,null,values);
         college.setId(id);
@@ -77,7 +83,7 @@ class DBHelper extends SQLiteOpenHelper {
         ArrayList<College> collegeList = new ArrayList<>();
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.query(DATABASE_TABLE,FIELD_ARRAY,null,null,null,null,null);
-
+        cursor.moveToFirst();
 //        if (cursor.isFirst())
 //            do {
 //                College college = new College(cursor.getInt(0),cursor.getString(1),cursor.getInt(2)
@@ -85,7 +91,7 @@ class DBHelper extends SQLiteOpenHelper {
 //                collegeList.add(college);
 //            }while(cursor.moveToNext());
 
-        while (cursor.isAfterLast())
+        while (!cursor.isAfterLast())
         {
             College newCollege =  new College(cursor.getInt(0),cursor.getString(1),cursor.getInt(2)
                 , cursor.getDouble(3),cursor.getDouble(4),cursor.getString(5));
