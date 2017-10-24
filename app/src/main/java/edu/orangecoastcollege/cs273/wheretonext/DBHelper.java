@@ -78,12 +78,21 @@ class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.query(DATABASE_TABLE,FIELD_ARRAY,null,null,null,null,null);
 
-        if (cursor.isFirst())
-            do {
-                College college = new College(cursor.getInt(0),cursor.getString(1),cursor.getInt(2)
+//        if (cursor.isFirst())
+//            do {
+//                College college = new College(cursor.getInt(0),cursor.getString(1),cursor.getInt(2)
+//                , cursor.getDouble(3),cursor.getDouble(4),cursor.getString(5));
+//                collegeList.add(college);
+//            }while(cursor.moveToNext());
+
+        while (cursor.isAfterLast())
+        {
+            College newCollege =  new College(cursor.getInt(0),cursor.getString(1),cursor.getInt(2)
                 , cursor.getDouble(3),cursor.getDouble(4),cursor.getString(5));
-                collegeList.add(college);
-            }while(cursor.moveToNext());
+
+            collegeList.add(newCollege);
+            cursor.moveToNext();
+        }
         cursor.close();
         database.close();
 
