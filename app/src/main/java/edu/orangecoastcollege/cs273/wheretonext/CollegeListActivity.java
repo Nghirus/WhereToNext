@@ -66,6 +66,13 @@ public class CollegeListActivity extends AppCompatActivity {
         // TODO: Implement the view college details using an Intent
     }
 
+    /** 
+    * This method adds a new college into the database and 
+    * recieves information from editText views. After the information 
+    * has been takes set the fields to empty strings or 0 for next input 
+    * @param view the view to be accessed in order to update the 
+    * the database 
+    */
     public void addCollege(View view) {
 
         // TODO: Implement the code for when the user clicks on the addCollegeButton
